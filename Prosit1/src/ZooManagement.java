@@ -1,46 +1,24 @@
-import java.util.Scanner;
-
 public class ZooManagement {
     public static void main(String[] args) {
 
-        int nbrCages = 20;
-        String zooName = "my zoo";
+        Animal lion = new Animal("Felidae", "Simba", 5, true);
 
 
-        System.out.println("Bienvenue dans " + zooName + " qui contient " + nbrCages + " cages.");
+        Zoo myZoo = new Zoo("My Zoo", "Tunis", 20);
 
 
-        Scanner sc = new Scanner(System.in);
+        myZoo.displayZoo();
 
-        // Saisie du nom du zoo
-        System.out.print("Entrez le nom du zoo : ");
-        String inputName = sc.nextLine();
-        while (inputName.trim().isEmpty()) {
-            System.out.print("Nom invalide, veuillez entrer un nom non vide : ");
-            inputName = sc.nextLine();
-        }
-        zooName = inputName;
+        System.out.println(myZoo);
+        System.out.println(myZoo.toString());
 
 
-        System.out.print("Entrez le nombre de cages : ");
-        while (!sc.hasNextInt()) {
-            System.out.print("Veuillez entrer un entier positif : ");
-            sc.next(); // consommer l’entrée invalide
-        }
-        int inputCages = sc.nextInt();
-        while (inputCages <= 0) {
-            System.out.print("Le nombre de cages doit être positif : ");
-            while (!sc.hasNextInt()) {
-                System.out.print("Veuillez entrer un entier positif : ");
-                sc.next();
-            }
-            inputCages = sc.nextInt();
-        }
-        nbrCages = inputCages;
+        Animal tiger = new Animal("Felidae", "Shera", 3, true);
+        Animal parrot = new Animal("Psittacidae", "Polly", 2, false);
 
-        // Étape 3 : affichage des changements
-        System.out.println("le zoo " + zooName + " contient " + nbrCages + " cages.");
 
-        sc.close();
+        System.out.println(lion);
+        System.out.println(tiger);
+        System.out.println(parrot);
     }
 }
