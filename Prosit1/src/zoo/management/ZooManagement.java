@@ -4,30 +4,34 @@ import zoo.entities.*;
 
 public class ZooManagement {
     public static void main(String[] args) {
-        // Instanciation simple (Instruction 21)
-        Aquatic aquatic = new Aquatic();
-        Terrestrial terrestrial = new Terrestrial();
-        Dolphin dolphin = new Dolphin();
-        Penguin penguin = new Penguin();
+        Zoo zoo = new Zoo("Belvédère", "Tunis");
 
-        System.out.println("Création d'objets réussie sans erreur ✅");
+        Animal a1 = new Animal("Félin", "Lion", 5, true);
+        Animal a2 = new Animal("Canin", "Loup", -2, true); // âge invalide ❌
+        Animal a3 = new Animal("Oiseau", "Perroquet", 3, false);
+        Animal a4 = new Animal("Mammifère", "Éléphant", 10, true); // dépassement ❌
 
-        // Instanciation paramétrée (Instruction 22)
-        Aquatic aq1 = new Aquatic("Poisson", "Requin", 10, false, "Océan");
-        Terrestrial t1 = new Terrestrial("Félin", "Tigre", 5, true, 4);
-        Dolphin d1 = new Dolphin("Mammifère", "Flipper", 8, true, "Mer", 25.5f);
-        Penguin p1 = new Penguin("Oiseau", "Pingouin Empereur", 3, false, "Bassin", 10.2f);
+        // On teste les différents cas
+        try {
+            zoo.addAnimal(a1); // ✅ valide
+        } catch (ZooFullException | InvalidAgeException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+        System.out.println("Nombre d’animaux : " + zoo.getAnimalCount());
 
-        System.out.println("\n=== toString() Test ===");
-        System.out.println(aq1);
-        System.out.println(t1);
-        System.out.println(d1);
-        System.out.println(p1);
+        try {
+            zoo.addAnimal(a2); // ❌ âge invalide
+        } catch (ZooFullException | InvalidAgeException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+        System.out.println("Nombre d’animaux : " + zoo.getAnimalCount());
 
-        // Test méthode swim() (Instruction 24)
-        System.out.println("\n=== Méthode swim() ===");
-        aq1.swim();
-        d1.swim();
-        p1.swim();
+        try {
+            zoo.addAnimal(a3); // ✅ valide
+            zoo.addAnimal(a4); // ❌ zoo plein
+        } catch (ZooFullException | InvalidAgeException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+        System.out.println("Nombre d’animaux : " + zoo.getAnimalCount());
     }
 }

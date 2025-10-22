@@ -1,6 +1,6 @@
 package zoo.entities;
 
-public class Aquatic extends Animal {
+public abstract class Aquatic extends Animal {
     protected String habitat;
 
     public Aquatic() {}
@@ -10,12 +10,25 @@ public class Aquatic extends Animal {
         this.habitat = habitat;
     }
 
+    public String getHabitat() { return habitat; }
+    public void setHabitat(String habitat) { this.habitat = habitat; }
+
+    // Méthode abstraite → toutes les sous-classes doivent la redéfinir
+    public abstract void swim();
+
     @Override
     public String toString() {
         return super.toString() + ", habitat='" + habitat + "'";
     }
 
-    public void swim() {
-        System.out.println("This aquatic animal is swimming.");
+    // Redéfinition de equals() (Instruction 31)
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Aquatic)) return false;
+        Aquatic other = (Aquatic) obj;
+        return this.name.equalsIgnoreCase(other.name)
+                && this.age == other.age
+                && this.habitat.equalsIgnoreCase(other.habitat);
     }
 }

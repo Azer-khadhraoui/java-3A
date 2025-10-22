@@ -1,91 +1,36 @@
 package zoo.entities;
 
 public class Zoo {
-    private static final int MAX_ANIMALS = 25;
+    private static final int MAX_ANIMALS = 3; // ✅ capacité réduite à 3
     private Animal[] animals = new Animal[MAX_ANIMALS];
-    private String name;
-    private String city;
     private int animalCount = 0;
 
-    public Zoo() {}
+    private String name;
+    private String city;
 
     public Zoo(String name, String city) {
-        setName(name); // vérification
+        this.name = name;
         this.city = city;
     }
 
-    // Getters & Setters
-    public String getName() { return name; }
-    public void setName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            System.out.println("❌ Le nom du zoo ne peut pas être vide !");
-            this.name = "Unnamed Zoo";
-        } else {
-            this.name = name;
+    // ✅ Nouvelle version : ne retourne plus rien
+    public void addAnimal(Animal animal) throws ZooFullException, InvalidAgeException {
+        // Vérifie l'âge de l'animal
+        if (animal.getAge() < 0) {
+            throw new InvalidAgeException("Âge d’animal invalide : l’âge ne peut pas être négatif.");
         }
-    }
 
-    public String getCity() { return city; }
-    public void setCity(String city) { this.city = city; }
-
-    public int getAnimalCount() { return animalCount; }
-
-    // Méthodes principales
-    public boolean isZooFull() {
-        return animalCount >= MAX_ANIMALS;
-    }
-
-    public boolean addAnimal(Animal animal) {
-        if (isZooFull()) {
-            System.out.println("❌ Impossible d’ajouter " + animal.getName() + " : zoo plein !");
-            return false;
+        // Vérifie la capacité du zoo
+        if (animalCount >= MAX_ANIMALS) {
+            throw new ZooFullException("Le zoo est plein, impossible d’ajouter un nouvel animal.");
         }
-        if (searchAnimal(animal) != -1) {
-            System.out.println("❌ L’animal " + animal.getName() + " existe déjà !");
-            return false;
-        }
-        animals[animalCount] = animal;
-        animalCount++;
-        return true;
+
+        // Ajout normal
+        animals[animalCount++] = animal;
+        System.out.println("✅ Animal ajouté : " + animal.getName());
     }
 
-    public void displayAnimals() {
-        System.out.println("Animaux du zoo " + name + " :");
-        for (int i = 0; i < animalCount; i++) {
-            System.out.println("- " + animals[i]);
-        }
-    }
-
-    public int searchAnimal(Animal animal) {
-        for (int i = 0; i < animalCount; i++) {
-            if (animals[i].equals(animal)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public boolean removeAnimal(Animal animal) {
-        int index = searchAnimal(animal);
-        if (index == -1) return false;
-        for (int i = index; i < animalCount - 1; i++) {
-            animals[i] = animals[i + 1];
-        }
-        animals[animalCount - 1] = null;
-        animalCount--;
-        return true;
-    }
-
-    public static Zoo comparerZoo(Zoo z1, Zoo z2) {
-        return (z1.animalCount >= z2.animalCount) ? z1 : z2;
-    }
-
-    public void displayZoo() {
-        System.out.println("Zoo " + name + " à " + city + " contient " + animalCount + "/" + MAX_ANIMALS + " animaux.");
-    }
-
-    @Override
-    public String toString() {
-        return "Zoo " + name + " (" + city + "), animaux: " + animalCount + "/" + MAX_ANIMALS;
+    public int getAnimalCount() {
+        return animalCount;
     }
 }
